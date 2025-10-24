@@ -267,6 +267,9 @@ class WordSegmenter:
         elif self.training_data == "BEST_my":
             file = Path.joinpath(Path(__file__).parent.parent.absolute(), 'Data/Best_my_train.txt')
             input_str = get_segmented_file_in_one_line(file, input_type="man_segmented", output_type="man_segmented")
+        elif self.training_data == "kaggle_mymar_legal_small":
+            file = Path.joinpath(Path(__file__).parent.parent.absolute(), 'Data/Kaggle/myanmar_legal_preprocessed_train.txt')
+            input_str = get_segmented_file_in_one_line(file, input_type="man_segmented", output_type="man_segmented")
         else:
             print("Warning: no implementation for this training data exists!")
         x_data, y_data = self._get_trainable_data(input_str)
@@ -294,6 +297,9 @@ class WordSegmenter:
             input_str = get_segmented_file_in_one_line(file, input_type="man_segmented", output_type="man_segmented")
         elif self.training_data == "BEST_my":
             file = Path.joinpath(Path(__file__).parent.parent.absolute(), 'Data/Best_my_valid.txt')
+            input_str = get_segmented_file_in_one_line(file, input_type="man_segmented", output_type="man_segmented")
+        elif self.training_data == "kaggle_mymar_legal_small":
+            file = Path.joinpath(Path(__file__).parent.parent.absolute(), 'Data/Kaggle/myanmar_legal_preprocessed_eval.txt')
             input_str = get_segmented_file_in_one_line(file, input_type="man_segmented", output_type="man_segmented")
         else:
             print("Warning: no implementation for this validation data exists!")
@@ -415,6 +421,12 @@ class WordSegmenter:
             if self.language != "Burmese":
                 print("Warning: the my.text data is in Burmese and you are testing a model in another language")
             file = Path.joinpath(Path(__file__).parent.parent.absolute(), 'Data/SAFT_burmese_test.txt')
+            text_acc = self._test_text_line_by_line(file=file, line_limit=line_limit, verbose=verbose)
+            accuracy.merge_accuracy(text_acc)
+        elif self.evaluation_data == "kaggle_mymar_legal_small":
+            if self.language != "Burmese":
+                print("Warning: the kaggle mymar legal small data is in Burmese and you are testing a model in another language")
+            file = Path.joinpath(Path(__file__).parent.parent.absolute(), 'Data/Kaggle/myanmar_legal_preprocessed_eval.txt')
             text_acc = self._test_text_line_by_line(file=file, line_limit=line_limit, verbose=verbose)
             accuracy.merge_accuracy(text_acc)
 
